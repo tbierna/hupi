@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Hupi Reference</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;javascript&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,9 +211,8 @@
     <div class="toc-wrapper">
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="shell">cURL</a>
               <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
               <a href="#" data-language-name="javascript">javascript</a>
         </div>
         <div class="search">
@@ -228,16 +227,16 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#hupilytics" class="toc-h1 toc-link" data-title="Hupilytics">Hupilytics</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Kittens">Get All Kittens</a>
+                    <a href="#action-tracking-a-page" class="toc-h2 toc-link" data-title="Hupilytics">Action - Tracking a Page</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Kittens">Get a Specific Kitten</a>
+                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Hupilytics">Get a Specific Kitten</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Kittens">Delete a Specific Kitten</a>
+                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Hupilytics">Delete a Specific Kitten</a>
                   </li>
               </ul>
           </li>
@@ -246,8 +245,7 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='https://github.com/hupi-analytics/hupilytics'>Hupilytics Source Repo</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -289,61 +287,102 @@ curl <span class="s2">"api_endpoint_here"</span>
 <aside class="notice">
 You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h1 id='hupilytics'>Hupilytics</h1>
+<p>To track user actions on your site via hupi, you have to include this javascript libary called <a href="https://github.com/hupi-analytics/hupilytics/blob/master/hupilytics.js">hupilytics</a> in your website.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>All these tracked user actions are sent to our catchbox servers, the library takes care of pushing these events to our servers. You just need to have your hupi provided account/client name, siteId.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<p>And example api key and client/account name will be like this shown on the right side.</p>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>client = hupi</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
+
+<aside class="notice">
+It is better to include this js library at the bottom of your html page
+</aside>
+
+<p>Now we move on to tracking specific actions.</p>
+<h2 id='action-tracking-a-page'>Action - Tracking a Page</h2>
+<p>To page track a simple ecommerce page like home page or category pages you should include this code shown on the right after including the <code>hupilytics.js</code> library.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">pageTrack</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">clientName</span><span class="p">,</span> <span class="nx">siteId</span><span class="p">,</span> <span class="nx">currencyShortCode</span><span class="p">,</span> <span class="nx">productsDisplayed</span><span class="p">,</span> <span class="nx">productsRecommended</span><span class="p">,</span> <span class="nx">LangShortCode</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">_paq</span> <span class="o">=</span> <span class="nx">_paq</span> <span class="o">||</span> <span class="p">[];</span>
+  <span class="p">(</span><span class="kd">function</span><span class="p">()</span>
+  <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="s2">"https://api.catchbox.hupi.io/v2/"</span> <span class="o">+</span> <span class="nx">clientName</span> <span class="o">+</span> <span class="s2">"/hupilytics"</span><span class="p">;</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setTrackerUrl"</span><span class="p">,</span> <span class="nx">u</span><span class="p">]);</span>  <span class="c1">// Required</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setSiteId"</span><span class="p">,</span> <span class="nx">siteId</span><span class="p">]);</span>  <span class="c1">// Required: must be an integer</span>
+
+
+  <span class="c1">// ! Required ! Our API needs the current timestamp for the page</span>
+  <span class="kd">function</span> <span class="nx">current_ts</span><span class="p">()</span>
+  <span class="p">{</span>
+  <span class="c1">// needed for IE8 compat, see http://bit.ly/1NLevPT</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">();</span>
+  <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="c1">// ! Required ! Our API needs the current timestamp for the page</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"current_ts"</span><span class="p">,</span> <span class="nx">current_ts</span><span class="p">(),</span> <span class="s2">"page"</span><span class="p">]);</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="s2">"currency"</span><span class="p">,</span> <span class="nx">currencyShortCode</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">]);</span> <span class="c1">// You can use 'EUR' for euros and 'USD' for american dollar</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">"products_impression"</span><span class="p">,</span> <span class="nx">productsDisplayed</span><span class="p">,</span> <span class="s2">"page"</span> <span class="p">]);</span> <span class="c1">// All products shown on page excluding recommendations</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="s2">"products_recommendation"</span><span class="p">,</span><span class="nx">productsRecommended</span><span class="p">,</span><span class="s2">"page"</span><span class="p">]);</span> <span class="c1">// Only if page contains recommendations, this variable should be set with the list of recommendations</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">"lang"</span><span class="p">,</span><span class="nx">LangShortCode</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">]);</span> <span class="c1">// FR/EN - 2 char shortcode</span>
+  <span class="kd">var</span> <span class="nx">d</span><span class="o">=</span><span class="nb">document</span><span class="p">,</span> <span class="nx">g</span><span class="o">=</span><span class="nx">d</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"script"</span><span class="p">),</span> <span class="nx">s</span><span class="o">=</span><span class="nx">d</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">"script"</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+  <span class="nx">g</span><span class="p">.</span><span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="p">;</span>
+  <span class="nx">g</span><span class="p">.</span><span class="nx">defer</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+  <span class="nx">g</span><span class="p">.</span><span class="nx">async</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+  <span class="nx">g</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="nx">u</span><span class="p">;</span>
+  <span class="nx">s</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span><span class="nx">s</span><span class="p">);</span>
+  <span class="p">})();</span>
+
+  <span class="c1">// To actually push the tracking data to hupi catchbox</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"trackPageView"</span><span class="p">]);</span>
+  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"enableLinkTracking"</span><span class="p">]);</span>
+<span class="p">}</span>
+<span class="nx">pageTrack</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">CLIENTNAME</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">SITEID</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">CURRENCY</span><span class="o">-</span><span class="nx">SHORTCODE</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">PRODUCTS</span><span class="o">-</span><span class="nx">DISPLAYED</span><span class="o">-</span><span class="nx">ON</span><span class="o">-</span><span class="nx">PAGE</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">PRODUCT</span><span class="o">-</span><span class="nx">IDS</span><span class="o">-</span><span class="nx">RECOMMENDED</span><span class="o">-</span><span class="nx">ON</span><span class="o">-</span><span class="nx">PAGE</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">LANGUAGE</span><span class="o">-</span><span class="nx">SHORT</span><span class="o">-</span><span class="nx">CODE</span><span class="o">&gt;</span><span class="p">)</span>
+</code></pre>
+<p>This pushes the track page event to catchbox</p>
+<h3 id='variables-needed-for-pagetrack-function'>Variables Needed for pageTrack function</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>example</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>CLIENTNAME</td>
+<td>&#39;hupi&#39;</td>
+<td>It should always be set</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>SITEID</td>
+<td>1</td>
+<td>If it is a staging/test site use 99, for production use 1. It is used for identifying your website.</td>
+</tr>
+<tr>
+<td>CURRENCY-SHORTCODE</td>
+<td>&#39;EUR&#39;</td>
+<td>Currency used in your site, You can use &#39;EUR&#39; for euros and &#39;USD&#39; for american dollar</td>
+</tr>
+<tr>
+<td>PRODUCTS-DISPLAYED-ON-PAGE</td>
+<td>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;]</td>
+<td>Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array <code>[]</code></td>
+</tr>
+<tr>
+<td>PRODUCT-IDS-RECOMMENDED-ON-PAGE</td>
+<td>[&#39;5&#39;, &#39;6&#39;, &#39;7&#39;]</td>
+<td>Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array <code>[]</code></td>
+</tr>
+<tr>
+<td>LANGUAGE-SHORT-CODE</td>
+<td>&#39;FR&#39;</td>
+<td>Human Language used on the site. Use a two character shortcode. For french &#39;FR&#39;, english &#39;EN&#39;, spanish &#39;ES&#39;</td>
 </tr>
 </tbody></table>
 
@@ -379,7 +418,7 @@ Remember — a happy kitten is an authenticated kitten!
 <p>This endpoint retrieves a specific kitten.</p>
 
 <aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
+<h3 id='http-request'>HTTP Request</h3>
 <p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
@@ -418,7 +457,7 @@ Remember — a happy kitten is an authenticated kitten!
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>This endpoint retrieves a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
+<h3 id='http-request-2'>HTTP Request</h3>
 <p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
 <h3 id='url-parameters-2'>URL Parameters</h3>
 <table><thead>
@@ -492,9 +531,8 @@ Remember — a happy kitten is an authenticated kitten!
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="shell">cURL</a>
                 <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
                 <a href="#" data-language-name="javascript">javascript</a>
           </div>
       </div>
