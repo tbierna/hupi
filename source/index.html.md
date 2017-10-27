@@ -1,15 +1,13 @@
 ---
-title: API Reference
+title: Hupi Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
+  - shell: cURL
   - ruby
-  - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - <a href='https://github.com/hupi-analytics/hupilytics'>Hupilytics Source Repo</a>
 
 includes:
   - errors
@@ -65,69 +63,80 @@ Kittn expects for the API key to be included in all API requests to the server i
 You must replace <code>meowmeowmeow</code> with your personal API key.
 </aside>
 
-# Kittens
+# Hupilytics
 
-## Get All Kittens
+To track user actions on your site via hupi, you have to include this javascript libary called [hupilytics](https://github.com/hupi-analytics/hupilytics/blob/master/hupilytics.js) in your website.
 
-```ruby
-require 'kittn'
+All these tracked user actions are sent to our catchbox servers, the library takes care of pushing these events to our servers. You just need to have your hupi provided account/client name, siteId.
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+And example api key and client/account name will be like this shown on the right side.
 
-```python
-import kittn
+> client = hupi
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+<aside class="notice">
+It is better to include this js library at the bottom of your html page
+</aside>
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
+Now we move on to tracking specific actions.
+
+## Action - Tracking a Page
+
+To page track a simple ecommerce page like home page or category pages you should include this code shown on the right after including the `hupilytics.js` library.
+
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
+var pageTrack = function(clientName, siteId, currencyShortCode, productsDisplayed, productsRecommended, LangShortCode){
+  var _paq = _paq || [];
+  (function()
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
+  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
+  _paq.push(["setTrackerUrl", u]);  // Required
+  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
+
+
+  // ! Required ! Our API needs the current timestamp for the page
+  function current_ts()
   {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+  // needed for IE8 compat, see http://bit.ly/1NLevPT
+  if (!Date.now) {
+  Date.now = function() {
+  return new Date().getTime();
+  };
   }
-]
+  return Math.floor(Date.now() / 1000);
+  }
+  // ! Required ! Our API needs the current timestamp for the page
+  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
+  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
+  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
+  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
+  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
+  g.type="text/javascript";
+  g.defer=true;
+  g.async=true;
+  g.src=u;
+  s.parentNode.insertBefore(g,s);
+  })();
+
+  // To actually push the tracking data to hupi catchbox
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+}
+pageTrack(<CLIENTNAME>, <SITEID>, <CURRENCY-SHORTCODE>, <PRODUCTS-DISPLAYED-ON-PAGE>, <PRODUCT-IDS-RECOMMENDED-ON-PAGE>, <LANGUAGE-SHORT-CODE>)
 ```
 
-This endpoint retrieves all kittens.
+This pushes the track page event to catchbox
+### Variables Needed for pageTrack function
 
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
+Parameter | example | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+CLIENTNAME | 'hupi' | It should always be set
+SITEID | 1 | If it is a staging/test site use 99, for production use 1. It is used for identifying your website.
+CURRENCY-SHORTCODE | 'EUR' | Currency used in your site, You can use 'EUR' for euros and 'USD' for american dollar
+PRODUCTS-DISPLAYED-ON-PAGE | ['1', '2', '3', '4'] | Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array `[]`
+PRODUCT-IDS-RECOMMENDED-ON-PAGE | ['5', '6', '7'] | Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array `[]`
+LANGUAGE-SHORT-CODE | 'FR' | Human Language used on the site. Use a two character shortcode. For french 'FR', english 'EN', spanish 'ES'
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
