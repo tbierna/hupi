@@ -81,65 +81,45 @@ Now we move on to tracking specific actions.
 
 ## Action - Tracking a Page
 
-To page track a simple ecommerce page like home page or category pages you should include this code shown on the right after including the `hupilytics.js` library.
-
+To page track ecommerce pages like home page or category pages you should include `hupiPageTrack` function with proper arguments. The function signature is shown on the right
 
 ```javascript
-var pageTrack = function(clientName, siteId, currencyShortCode, productsDisplayed, productsRecommended, LangShortCode){
-  var _paq = _paq || [];
-  (function()
-  {
-  var u = "https://api.catchbox.hupi.io/v2/" + clientName + "/hupilytics";
-  _paq.push(["setTrackerUrl", u]);  // Required
-  _paq.push(["setSiteId", siteId]);  // Required: must be an integer
-
-
-  // ! Required ! Our API needs the current timestamp for the page
-  function current_ts()
-  {
-  // needed for IE8 compat, see http://bit.ly/1NLevPT
-  if (!Date.now) {
-  Date.now = function() {
-  return new Date().getTime();
-  };
-  }
-  return Math.floor(Date.now() / 1000);
-  }
-  // ! Required ! Our API needs the current timestamp for the page
-  _paq.push(["setCustomVariable", 1, "current_ts", current_ts(), "page"]);
-  _paq.push(["setCustomVariable", 43, "currency", currencyShortCode, "page"]); // You can use 'EUR' for euros and 'USD' for american dollar
-  _paq.push(["setCustomVariable", 30, "products_impression", productsDisplayed, "page" ]); // All products shown on page excluding recommendations
-  _paq.push(["setCustomVariable",40,"products_recommendation",productsRecommended,"page"]); // Only if page contains recommendations, this variable should be set with the list of recommendations
-  _paq.push(["setCustomVariable", 42, "lang",LangShortCode, "page"]); // FR/EN - 2 char shortcode
-  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0];
-  g.type="text/javascript";
-  g.defer=true;
-  g.async=true;
-  g.src=u;
-  s.parentNode.insertBefore(g,s);
-  })();
-
-  // To actually push the tracking data to hupi catchbox
-  _paq.push(["trackPageView"]);
-  _paq.push(["enableLinkTracking"]);
-}
-pageTrack(<CLIENTNAME>, <SITEID>, <CURRENCY-SHORTCODE>, <PRODUCTS-DISPLAYED-ON-PAGE>, <PRODUCT-IDS-RECOMMENDED-ON-PAGE>, <LANGUAGE-SHORT-CODE>)
+hupiPageTrack(
+  clientName, 
+  siteId, 
+  currencyShortCode,
+  userId,
+  productsDisplayed, 
+  productsRecommended,
+  LangShortCode)
 ```
 
-This pushes the track page event to catchbox
-### Variables Needed for pageTrack function
+The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.
 
-Parameter | example | Description
---------- | ------- | -----------
-CLIENTNAME | 'hupi' | It should always be set
-SITEID | 1 | If it is a staging/test site use 99, for production use 1. It is used for identifying your website.
-CURRENCY-SHORTCODE | 'EUR' | Currency used in your site, You can use 'EUR' for euros and 'USD' for american dollar
-PRODUCTS-DISPLAYED-ON-PAGE | ['1', '2', '3', '4'] | Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array `[]`
-PRODUCT-IDS-RECOMMENDED-ON-PAGE | ['5', '6', '7'] | Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array `[]`
-LANGUAGE-SHORT-CODE | 'FR' | Human Language used on the site. Use a two character shortcode. For french 'FR', english 'EN', spanish 'ES'
+```javascript
+// Example code with dummy values for logged in user
+hupiPageTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'FR');
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+// Example code with dummy values for user who is not logged in
+hupiPageTrack('testsite', 1, 'EUR', '', ['1', '2'], ['4', '5', '6'], 'FR');
+```
+This pushes the track page event to catchbox.
+
+### Params/Arguments Needed for hupiPageTrack function
+
+Parameter | Example | Type | Description
+--------- | ------- | ---- | -----------
+clientName | 'hupi' | String | Name of the client in smallcase, usually provided by hupi to you.
+siteId | 1 | Integer | If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.
+currencyShortCode | 'EUR' | String | Currency used in your site, You can use 'EUR' for euros and 'USD' for american dollar
+productsDisplayed | ['1', '2', '3', '4'] | Array of Strings | Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array `[]`
+productsRecommended | ['5', '6', '7'] | Array of Strings | Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array `[]`
+LangShortCode | 'FR' | String | Human Language used on the site. Use a two character shortcode. For french `FR`, english `EN`, spanish `ES`
+userId | '100' | String | UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string `''`
+
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
 </aside>
 
 ## Get a Specific Kitten
