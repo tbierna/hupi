@@ -91,7 +91,7 @@ hupiPageTrack(
   userId,
   productsDisplayed, 
   productsRecommended,
-  LangShortCode)
+  LangShortCode);
 ```
 
 The detailed explaination of arguments and their types is listed in the table below.
@@ -122,45 +122,56 @@ userId | '100' | String | UserId of the user which is available when the user is
 This code should only be included after loading hupilytics js library.
 </aside>
 
-## Get a Specific Kitten
+## Action - Tracking a Product Page/Click
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+To page track ecommerce product pages/clicks, you should include `hupiProductClickTrack` function with proper arguments. The function signature is shown on the right
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+hupiProductClickTrack(
+    clientName,
+    siteId,
+    currencyShortCode,
+    userId,
+    productsDisplayed,
+    productsRecommended,
+    LangShortCode,
+    productId,
+    productName,
+    productPrice,
+    productCategories);
 ```
 
-> The above command returns JSON structured like this:
+The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.
 
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
+```javascript
+// Example code with dummy values
+hupiProductClickTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'FR', '100-pid', '100-prodname', '10.8', ['prod', 'categories']);
+
 ```
+This pushes the track page event to catchbox.
+Include this in product page, If product is viewed via modal include it in modal javascript.
+
+### Params/Arguments Needed for hupiProductClickTrack function
+
+Parameter | Example | Type | Description
+--------- | ------- | ---- | -----------
+clientName | 'hupi' | String | Name of the client in smallcase, usually provided by hupi to you.
+siteId | 1 | Integer | If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.
+currencyShortCode | 'EUR' | String | Currency used in your site, You can use 'EUR' for euros and 'USD' for american dollar
+productsDisplayed | ['1', '2', '3', '4'] | Array of Strings | Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array `[]`
+productsRecommended | ['5', '6', '7'] | Array of Strings | Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array `[]`
+LangShortCode | 'FR' | String | Human Language used on the site. Use a two character shortcode. For french `FR`, english `EN`, spanish `ES`
+userId | '100' | String | UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string `''`
+productId | '1' | String | Unique Id of the product, should always be a string, convert to string even if it is an integer before passing to this funciton. Mandatory.
+productName | 'prod name' | String | Name of the product
+productPrice | '10' | String | Price of the product, just the value is enough without passing in currency(Currency is one of the params already)
+productCategory | ['cat', 'dog'] | Array of Strings | List of categories product belongs to. If nothing, pass in an empty array `[]`.
+
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
+</aside>
+
 
 This endpoint retrieves a specific kitten.
 
