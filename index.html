@@ -304,90 +304,80 @@ It is better to include this js library at the bottom of your html page
 
 <p>Now we move on to tracking specific actions.</p>
 <h2 id='action-tracking-a-page'>Action - Tracking a Page</h2>
-<p>To page track a simple ecommerce page like home page or category pages you should include this code shown on the right after including the <code>hupilytics.js</code> library.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">pageTrack</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">clientName</span><span class="p">,</span> <span class="nx">siteId</span><span class="p">,</span> <span class="nx">currencyShortCode</span><span class="p">,</span> <span class="nx">productsDisplayed</span><span class="p">,</span> <span class="nx">productsRecommended</span><span class="p">,</span> <span class="nx">LangShortCode</span><span class="p">){</span>
-  <span class="kd">var</span> <span class="nx">_paq</span> <span class="o">=</span> <span class="nx">_paq</span> <span class="o">||</span> <span class="p">[];</span>
-  <span class="p">(</span><span class="kd">function</span><span class="p">()</span>
-  <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="s2">"https://api.catchbox.hupi.io/v2/"</span> <span class="o">+</span> <span class="nx">clientName</span> <span class="o">+</span> <span class="s2">"/hupilytics"</span><span class="p">;</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setTrackerUrl"</span><span class="p">,</span> <span class="nx">u</span><span class="p">]);</span>  <span class="c1">// Required</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setSiteId"</span><span class="p">,</span> <span class="nx">siteId</span><span class="p">]);</span>  <span class="c1">// Required: must be an integer</span>
-
-
-  <span class="c1">// ! Required ! Our API needs the current timestamp for the page</span>
-  <span class="kd">function</span> <span class="nx">current_ts</span><span class="p">()</span>
-  <span class="p">{</span>
-  <span class="c1">// needed for IE8 compat, see http://bit.ly/1NLevPT</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">();</span>
-  <span class="p">};</span>
-  <span class="p">}</span>
-  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="c1">// ! Required ! Our API needs the current timestamp for the page</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"current_ts"</span><span class="p">,</span> <span class="nx">current_ts</span><span class="p">(),</span> <span class="s2">"page"</span><span class="p">]);</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="s2">"currency"</span><span class="p">,</span> <span class="nx">currencyShortCode</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">]);</span> <span class="c1">// You can use 'EUR' for euros and 'USD' for american dollar</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">"products_impression"</span><span class="p">,</span> <span class="nx">productsDisplayed</span><span class="p">,</span> <span class="s2">"page"</span> <span class="p">]);</span> <span class="c1">// All products shown on page excluding recommendations</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="s2">"products_recommendation"</span><span class="p">,</span><span class="nx">productsRecommended</span><span class="p">,</span><span class="s2">"page"</span><span class="p">]);</span> <span class="c1">// Only if page contains recommendations, this variable should be set with the list of recommendations</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"setCustomVariable"</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">"lang"</span><span class="p">,</span><span class="nx">LangShortCode</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">]);</span> <span class="c1">// FR/EN - 2 char shortcode</span>
-  <span class="kd">var</span> <span class="nx">d</span><span class="o">=</span><span class="nb">document</span><span class="p">,</span> <span class="nx">g</span><span class="o">=</span><span class="nx">d</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">"script"</span><span class="p">),</span> <span class="nx">s</span><span class="o">=</span><span class="nx">d</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">"script"</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
-  <span class="nx">g</span><span class="p">.</span><span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="p">;</span>
-  <span class="nx">g</span><span class="p">.</span><span class="nx">defer</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
-  <span class="nx">g</span><span class="p">.</span><span class="nx">async</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
-  <span class="nx">g</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="nx">u</span><span class="p">;</span>
-  <span class="nx">s</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">g</span><span class="p">,</span><span class="nx">s</span><span class="p">);</span>
-  <span class="p">})();</span>
-
-  <span class="c1">// To actually push the tracking data to hupi catchbox</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"trackPageView"</span><span class="p">]);</span>
-  <span class="nx">_paq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s2">"enableLinkTracking"</span><span class="p">]);</span>
-<span class="p">}</span>
-<span class="nx">pageTrack</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">CLIENTNAME</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">SITEID</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">CURRENCY</span><span class="o">-</span><span class="nx">SHORTCODE</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">PRODUCTS</span><span class="o">-</span><span class="nx">DISPLAYED</span><span class="o">-</span><span class="nx">ON</span><span class="o">-</span><span class="nx">PAGE</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">PRODUCT</span><span class="o">-</span><span class="nx">IDS</span><span class="o">-</span><span class="nx">RECOMMENDED</span><span class="o">-</span><span class="nx">ON</span><span class="o">-</span><span class="nx">PAGE</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">LANGUAGE</span><span class="o">-</span><span class="nx">SHORT</span><span class="o">-</span><span class="nx">CODE</span><span class="o">&gt;</span><span class="p">)</span>
+<p>To page track ecommerce pages like home page or category pages you should include <code>hupiPageTrack</code> function with proper arguments. The function signature is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">hupiPageTrack</span><span class="p">(</span>
+  <span class="nx">clientName</span><span class="p">,</span> 
+  <span class="nx">siteId</span><span class="p">,</span> 
+  <span class="nx">currencyShortCode</span><span class="p">,</span>
+  <span class="nx">userId</span><span class="p">,</span>
+  <span class="nx">productsDisplayed</span><span class="p">,</span> 
+  <span class="nx">productsRecommended</span><span class="p">,</span>
+  <span class="nx">LangShortCode</span><span class="p">)</span>
 </code></pre>
-<p>This pushes the track page event to catchbox</p>
-<h3 id='variables-needed-for-pagetrack-function'>Variables Needed for pageTrack function</h3>
+<p>The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Example code with dummy values for logged in user</span>
+<span class="nx">hupiPageTrack</span><span class="p">(</span><span class="s1">'testsite'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'EUR'</span><span class="p">,</span> <span class="s1">'10000-id'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'4'</span><span class="p">,</span> <span class="s1">'5'</span><span class="p">,</span> <span class="s1">'6'</span><span class="p">],</span> <span class="s1">'FR'</span><span class="p">);</span>
+
+<span class="c1">// Example code with dummy values for user who is not logged in</span>
+<span class="nx">hupiPageTrack</span><span class="p">(</span><span class="s1">'testsite'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'EUR'</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'4'</span><span class="p">,</span> <span class="s1">'5'</span><span class="p">,</span> <span class="s1">'6'</span><span class="p">],</span> <span class="s1">'FR'</span><span class="p">);</span>
+</code></pre>
+<p>This pushes the track page event to catchbox.</p>
+<h3 id='params-arguments-needed-for-hupipagetrack-function'>Params/Arguments Needed for hupiPageTrack function</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>example</th>
+<th>Example</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>CLIENTNAME</td>
+<td>clientName</td>
 <td>&#39;hupi&#39;</td>
-<td>It should always be set</td>
+<td>String</td>
+<td>Name of the client in smallcase, usually provided by hupi to you.</td>
 </tr>
 <tr>
-<td>SITEID</td>
+<td>siteId</td>
 <td>1</td>
-<td>If it is a staging/test site use 99, for production use 1. It is used for identifying your website.</td>
+<td>Integer</td>
+<td>If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.</td>
 </tr>
 <tr>
-<td>CURRENCY-SHORTCODE</td>
+<td>currencyShortCode</td>
 <td>&#39;EUR&#39;</td>
+<td>String</td>
 <td>Currency used in your site, You can use &#39;EUR&#39; for euros and &#39;USD&#39; for american dollar</td>
 </tr>
 <tr>
-<td>PRODUCTS-DISPLAYED-ON-PAGE</td>
+<td>productsDisplayed</td>
 <td>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;]</td>
+<td>Array of Strings</td>
 <td>Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array <code>[]</code></td>
 </tr>
 <tr>
-<td>PRODUCT-IDS-RECOMMENDED-ON-PAGE</td>
+<td>productsRecommended</td>
 <td>[&#39;5&#39;, &#39;6&#39;, &#39;7&#39;]</td>
+<td>Array of Strings</td>
 <td>Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array <code>[]</code></td>
 </tr>
 <tr>
-<td>LANGUAGE-SHORT-CODE</td>
+<td>LangShortCode</td>
 <td>&#39;FR&#39;</td>
-<td>Human Language used on the site. Use a two character shortcode. For french &#39;FR&#39;, english &#39;EN&#39;, spanish &#39;ES&#39;</td>
+<td>String</td>
+<td>Human Language used on the site. Use a two character shortcode. For french <code>FR</code>, english <code>EN</code>, spanish <code>ES</code></td>
+</tr>
+<tr>
+<td>userId</td>
+<td>&#39;100&#39;</td>
+<td>String</td>
+<td>UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string <code>&#39;&#39;</code></td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
 </aside>
 <h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
