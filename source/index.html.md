@@ -17,51 +17,8 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Hupi Integration Guide. [TO BE UPDATED SOON]
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
-
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
 
 # Hupilytics
 
@@ -172,68 +129,119 @@ productCategory | ['cat', 'dog'] | Array of Strings | List of categories product
 This code should only be included after loading hupilytics js library.
 </aside>
 
+## Action - Tracking a Add to Cart
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
+To page track ecommerce add to cart event, you should include `hupiAddToCartTrack` function with proper arguments. The function signature is shown on the right
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
+hupiAddToCartTrack(
+    clientName,
+    siteId,
+    currencyShortCode,
+    userId,
+    productsDisplayed,
+    productsRecommended,
+    LangShortCode,
+    productId,
+    productName,
+    productPrice,
+    productCategories,
+    productQuantity,
+    totalCartAmount
+    );
 ```
 
-> The above command returns JSON structured like this:
+The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.
 
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
+```javascript
+// Example code with dummy values
+hupiAddToCartTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'FR', '100-pid', '100-prodname', '10.8', ['prod', 'categories'], 1, '100.2');
+
+```
+This pushes the track page event to catchbox.
+Include this in product page, If product is viewed via modal include it in modal javascript.
+
+### Params/Arguments Needed for hupiAddToCartTrack function
+
+Parameter | Example | Type | Description
+--------- | ------- | ---- | -----------
+clientName | 'hupi' | String | Name of the client in smallcase, usually provided by hupi to you.
+siteId | 1 | Integer | If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.
+currencyShortCode | 'EUR' | String | Currency used in your site, You can use 'EUR' for euros and 'USD' for american dollar
+productsDisplayed | ['1', '2', '3', '4'] | Array of Strings | Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array `[]`
+productsRecommended | ['5', '6', '7'] | Array of Strings | Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array `[]`
+LangShortCode | 'FR' | String | Human Language used on the site. Use a two character shortcode. For french `FR`, english `EN`, spanish `ES`
+userId | '100' | String | UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string `''`
+productId | '1' | String | Unique Id of the product, should always be a string, convert to string even if it is an integer before passing to this funciton. Mandatory.
+productName | 'prod name' | String | Name of the product
+productPrice | '10' | String | Price of the product, just the value is enough without passing in currency(Currency is one of the params already)
+productCategory | ['cat', 'dog'] | Array of Strings | List of categories product belongs to. If nothing, pass in an empty array `[]`.
+productQuantity | 1 | Integer | Quantity of a product. Should be atleast 1.
+totalCartAmount | '1000.4' | String | Total price of products in cart. Should be a string.
+
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
+</aside>
+
+## Action - Remove from Cart
+
+To track ecommerce Remove from cart, when a user removes a product from his cart, this event should be triggered. You should call this function 'hupiRemoveFromCartTrack'
+This function has the same arguments as `hupiAddToCartTrack`, so for reference on usage look above.
+
+## Action - Tracking an Order
+
+To page track ecommerce purchases, you should include `hupiOrderTrack` function with proper arguments. The function signature is shown on the right
+
+```javascript
+hupiOrderTrack(
+    clientName,
+    siteId,
+    currencyShortCode,
+    userId,
+    productsDisplayed,
+    productsRecommended,
+    LangShortCode,
+    orderId,
+    orderRevenueTotal,
+    orderSub,
+    orderTaxAmount,
+    orderShippingAmount,
+    orderDiscountOffered
+    );
 ```
 
-This endpoint retrieves a specific kitten.
+The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.
 
-### HTTP Request
+```javascript
+// Example code with dummy values
+hupiOrderTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'FR', '100orderid', 100.0, 0, 20.0, 10.0, true);
 
-`DELETE http://example.com/kittens/<ID>`
+```
+This pushes the track page event to catchbox.
+Include this in product page, If product is viewed via modal include it in modal javascript.
 
-### URL Parameters
+### Params/Arguments Needed for hupiOrderTrack function
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+Parameter | Example | Type | Description
+--------- | ------- | ---- | -----------
+clientName | 'hupi' | String | Name of the client in smallcase, usually provided by hupi to you.
+siteId | 1 | Integer | If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.
+currencyShortCode | 'EUR' | String | Currency used in your site, You can use 'EUR' for euros and 'USD' for american dollar
+productsDisplayed | ['1', '2', '3', '4'] | Array of Strings | Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array `[]`
+productsRecommended | ['5', '6', '7'] | Array of Strings | Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array `[]`
+LangShortCode | 'FR' | String | Human Language used on the site. Use a two character shortcode. For french `FR`, english `EN`, spanish `ES`
+userId | '100' | String | UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string `''`
+orderId | '1' | String | (required) Unique Order ID
+orderRevenueTotal | 100000.001 | Integer/Float | (required) Order Revenue grand total (includes tax, shipping, and subtracted discount), must be an integer or a float
+orderSub | 10 | Integer  | Order sub total (excludes shipping and excludes taxes), must be an integer. If can't be valid, put 0.
+orderTaxAmount | 1.0 | Integer/Float | Tax. If doesn't apply, put 0.
+orderShippingAmount | 10.0 | Integer/Float | Shipping costs. 0 if not there.
+orderDiscountOffered | 0 | Integer/Float | boolean (set to false for unspecified parameter)
+
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
+</aside>
+
 
