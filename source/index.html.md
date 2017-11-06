@@ -159,7 +159,6 @@ hupiAddToCartTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6']
 
 ```
 This pushes the track page event to catchbox.
-Include this in product page, If product is viewed via modal include it in modal javascript.
 
 ### Params/Arguments Needed for hupiAddToCartTrack function
 
@@ -187,6 +186,38 @@ This code should only be included after loading hupilytics js library.
 
 To track ecommerce Remove from cart, when a user removes a product from his cart, this event should be triggered. You should call this function 'hupiRemoveFromCartTrack'
 This function has the same arguments as `hupiAddToCartTrack`, so for reference on usage look above.
+
+## Action - Track hupi Recommendation Click
+
+To track product clicks on hupi recommendations, you need to call this function `hupiRecoTrack` with proper arguments.
+
+The function signature is shown on the right
+
+```javascript
+hupiRecoTrack(
+    hupiEndpointName,
+    productId,
+    productName)
+```
+
+```javascript
+// Example code with dummy values
+hupiRecoTrack('hupi_reco_sim', 'pid', 'name');
+
+```
+This pushes the track page event to catchbox.
+
+<aside class="notice">
+This code should be included as onclick event call in html code of the product link. It is advised to delay 400ms before navigating to the clicked product, so that hupi will receive the event before page refreshes with clicked product.
+</aside>
+
+### Params/Arguments Needed for RecoTrack function
+
+Parameter | Example | Type | Description
+--------- | ------- | ---- | -----------
+hupiEndpointName | 'hupi_reco_sim' | String | The name of the hupi endpoint from which you fetched the products to display
+productId | 'pid' | String | Product Id, unique identifier for product which was clicked
+productName | 'name' | String | Name of the product clicked
 
 ## Action - Tracking an Order
 
@@ -219,7 +250,7 @@ hupiOrderTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'F
 
 ```
 This pushes the track page event to catchbox.
-Include this in product page, If product is viewed via modal include it in modal javascript.
+
 
 ### Params/Arguments Needed for hupiOrderTrack function
 
