@@ -10,7 +10,6 @@ toc_footers:
   - <a href='https://github.com/hupi-analytics/hupilytics'>Hupilytics Source Repo</a>
 
 includes:
-  - errors
 
 search: true
 ---
