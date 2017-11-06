@@ -224,9 +224,6 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
-          </li>
-          <li>
             <a href="#hupilytics" class="toc-h1 toc-link" data-title="Hupilytics">Hupilytics</a>
               <ul class="toc-list-h2">
                   <li>
@@ -236,7 +233,13 @@
                     <a href="#action-tracking-a-product-page-click" class="toc-h2 toc-link" data-title="Hupilytics">Action - Tracking a Product Page/Click</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Hupilytics">Delete a Specific Kitten</a>
+                    <a href="#action-tracking-a-add-to-cart" class="toc-h2 toc-link" data-title="Hupilytics">Action - Tracking a Add to Cart</a>
+                  </li>
+                  <li>
+                    <a href="#action-remove-from-cart" class="toc-h2 toc-link" data-title="Hupilytics">Action - Remove from Cart</a>
+                  </li>
+                  <li>
+                    <a href="#action-tracking-an-order" class="toc-h2 toc-link" data-title="Hupilytics">Action - Tracking an Order</a>
                   </li>
               </ul>
           </li>
@@ -252,41 +255,7 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+<p>Hupi Integration Guide. [TO BE UPDATED SOON]</p>
 <h1 id='hupilytics'>Hupilytics</h1>
 <p>To track user actions on your site via hupi, you have to include this javascript libary called <a href="https://github.com/hupi-analytics/hupilytics/blob/master/hupilytics.js">hupilytics</a> in your website.</p>
 
@@ -482,63 +451,245 @@ Include this in product page, If product is viewed via modal include it in modal
 <aside class="notice">
 This code should only be included after loading hupilytics js library.
 </aside>
-
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<h2 id='action-tracking-a-add-to-cart'>Action - Tracking a Add to Cart</h2>
+<p>To page track ecommerce add to cart event, you should include <code>hupiAddToCartTrack</code> function with proper arguments. The function signature is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">hupiAddToCartTrack</span><span class="p">(</span>
+    <span class="nx">clientName</span><span class="p">,</span>
+    <span class="nx">siteId</span><span class="p">,</span>
+    <span class="nx">currencyShortCode</span><span class="p">,</span>
+    <span class="nx">userId</span><span class="p">,</span>
+    <span class="nx">productsDisplayed</span><span class="p">,</span>
+    <span class="nx">productsRecommended</span><span class="p">,</span>
+    <span class="nx">LangShortCode</span><span class="p">,</span>
+    <span class="nx">productId</span><span class="p">,</span>
+    <span class="nx">productName</span><span class="p">,</span>
+    <span class="nx">productPrice</span><span class="p">,</span>
+    <span class="nx">productCategories</span><span class="p">,</span>
+    <span class="nx">productQuantity</span><span class="p">,</span>
+    <span class="nx">totalCartAmount</span>
+    <span class="p">);</span>
 </code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<p>The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Example code with dummy values</span>
+<span class="nx">hupiAddToCartTrack</span><span class="p">(</span><span class="s1">'testsite'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'EUR'</span><span class="p">,</span> <span class="s1">'10000-id'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'4'</span><span class="p">,</span> <span class="s1">'5'</span><span class="p">,</span> <span class="s1">'6'</span><span class="p">],</span> <span class="s1">'FR'</span><span class="p">,</span> <span class="s1">'100-pid'</span><span class="p">,</span> <span class="s1">'100-prodname'</span><span class="p">,</span> <span class="s1">'10.8'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'prod'</span><span class="p">,</span> <span class="s1">'categories'</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'100.2'</span><span class="p">);</span>
+
+</code></pre>
+<p>This pushes the track page event to catchbox.
+Include this in product page, If product is viewed via modal include it in modal javascript.</p>
+<h3 id='params-arguments-needed-for-hupiaddtocarttrack-function'>Params/Arguments Needed for hupiAddToCartTrack function</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Example</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
+<td>clientName</td>
+<td>&#39;hupi&#39;</td>
+<td>String</td>
+<td>Name of the client in smallcase, usually provided by hupi to you.</td>
+</tr>
+<tr>
+<td>siteId</td>
+<td>1</td>
+<td>Integer</td>
+<td>If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.</td>
+</tr>
+<tr>
+<td>currencyShortCode</td>
+<td>&#39;EUR&#39;</td>
+<td>String</td>
+<td>Currency used in your site, You can use &#39;EUR&#39; for euros and &#39;USD&#39; for american dollar</td>
+</tr>
+<tr>
+<td>productsDisplayed</td>
+<td>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;]</td>
+<td>Array of Strings</td>
+<td>Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array <code>[]</code></td>
+</tr>
+<tr>
+<td>productsRecommended</td>
+<td>[&#39;5&#39;, &#39;6&#39;, &#39;7&#39;]</td>
+<td>Array of Strings</td>
+<td>Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array <code>[]</code></td>
+</tr>
+<tr>
+<td>LangShortCode</td>
+<td>&#39;FR&#39;</td>
+<td>String</td>
+<td>Human Language used on the site. Use a two character shortcode. For french <code>FR</code>, english <code>EN</code>, spanish <code>ES</code></td>
+</tr>
+<tr>
+<td>userId</td>
+<td>&#39;100&#39;</td>
+<td>String</td>
+<td>UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string <code>&#39;&#39;</code></td>
+</tr>
+<tr>
+<td>productId</td>
+<td>&#39;1&#39;</td>
+<td>String</td>
+<td>Unique Id of the product, should always be a string, convert to string even if it is an integer before passing to this funciton. Mandatory.</td>
+</tr>
+<tr>
+<td>productName</td>
+<td>&#39;prod name&#39;</td>
+<td>String</td>
+<td>Name of the product</td>
+</tr>
+<tr>
+<td>productPrice</td>
+<td>&#39;10&#39;</td>
+<td>String</td>
+<td>Price of the product, just the value is enough without passing in currency(Currency is one of the params already)</td>
+</tr>
+<tr>
+<td>productCategory</td>
+<td>[&#39;cat&#39;, &#39;dog&#39;]</td>
+<td>Array of Strings</td>
+<td>List of categories product belongs to. If nothing, pass in an empty array <code>[]</code>.</td>
+</tr>
+<tr>
+<td>productQuantity</td>
+<td>1</td>
+<td>Integer</td>
+<td>Quantity of a product. Should be atleast 1.</td>
+</tr>
+<tr>
+<td>totalCartAmount</td>
+<td>&#39;1000.4&#39;</td>
+<td>String</td>
+<td>Total price of products in cart. Should be a string.</td>
 </tr>
 </tbody></table>
+
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
+</aside>
+<h2 id='action-remove-from-cart'>Action - Remove from Cart</h2>
+<p>To track ecommerce Remove from cart, when a user removes a product from his cart, this event should be triggered. You should call this function &#39;hupiRemoveFromCartTrack&#39;
+This function has the same arguments as <code>hupiAddToCartTrack</code>, so for reference on usage look above.</p>
+<h2 id='action-tracking-an-order'>Action - Tracking an Order</h2>
+<p>To page track ecommerce purchases, you should include <code>hupiOrderTrack</code> function with proper arguments. The function signature is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="nx">hupiOrderTrack</span><span class="p">(</span>
+    <span class="nx">clientName</span><span class="p">,</span>
+    <span class="nx">siteId</span><span class="p">,</span>
+    <span class="nx">currencyShortCode</span><span class="p">,</span>
+    <span class="nx">userId</span><span class="p">,</span>
+    <span class="nx">productsDisplayed</span><span class="p">,</span>
+    <span class="nx">productsRecommended</span><span class="p">,</span>
+    <span class="nx">LangShortCode</span><span class="p">,</span>
+    <span class="nx">orderId</span><span class="p">,</span>
+    <span class="nx">orderRevenueTotal</span><span class="p">,</span>
+    <span class="nx">orderSub</span><span class="p">,</span>
+    <span class="nx">orderTaxAmount</span><span class="p">,</span>
+    <span class="nx">orderShippingAmount</span><span class="p">,</span>
+    <span class="nx">orderDiscountOffered</span>
+    <span class="p">);</span>
+</code></pre>
+<p>The detailed explaination of arguments and their types is listed in the table below.
+Here is an example js code with dummy values.</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Example code with dummy values</span>
+<span class="nx">hupiOrderTrack</span><span class="p">(</span><span class="s1">'testsite'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'EUR'</span><span class="p">,</span> <span class="s1">'10000-id'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'4'</span><span class="p">,</span> <span class="s1">'5'</span><span class="p">,</span> <span class="s1">'6'</span><span class="p">],</span> <span class="s1">'FR'</span><span class="p">,</span> <span class="s1">'100orderid'</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+
+</code></pre>
+<p>This pushes the track page event to catchbox.
+Include this in product page, If product is viewed via modal include it in modal javascript.</p>
+<h3 id='params-arguments-needed-for-hupiordertrack-function'>Params/Arguments Needed for hupiOrderTrack function</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Example</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>clientName</td>
+<td>&#39;hupi&#39;</td>
+<td>String</td>
+<td>Name of the client in smallcase, usually provided by hupi to you.</td>
+</tr>
+<tr>
+<td>siteId</td>
+<td>1</td>
+<td>Integer</td>
+<td>If it is a staging/test site use 99, for production use 1. It is used for identifying your website. This is also usually provided by hupi.</td>
+</tr>
+<tr>
+<td>currencyShortCode</td>
+<td>&#39;EUR&#39;</td>
+<td>String</td>
+<td>Currency used in your site, You can use &#39;EUR&#39; for euros and &#39;USD&#39; for american dollar</td>
+</tr>
+<tr>
+<td>productsDisplayed</td>
+<td>[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;]</td>
+<td>Array of Strings</td>
+<td>Id of all products that are displayed on the page except recommended products by hupi. If no products are shown, pass an empty array <code>[]</code></td>
+</tr>
+<tr>
+<td>productsRecommended</td>
+<td>[&#39;5&#39;, &#39;6&#39;, &#39;7&#39;]</td>
+<td>Array of Strings</td>
+<td>Product ids which hupi recommended for you(see more about hupi recommendations here). If hupi recommendations are not displayed, then pass an empty array <code>[]</code></td>
+</tr>
+<tr>
+<td>LangShortCode</td>
+<td>&#39;FR&#39;</td>
+<td>String</td>
+<td>Human Language used on the site. Use a two character shortcode. For french <code>FR</code>, english <code>EN</code>, spanish <code>ES</code></td>
+</tr>
+<tr>
+<td>userId</td>
+<td>&#39;100&#39;</td>
+<td>String</td>
+<td>UserId of the user which is available when the user is logged in. It should be a unique identifier. If not available in cases of not logged in, then pass empty string <code>&#39;&#39;</code></td>
+</tr>
+<tr>
+<td>orderId</td>
+<td>&#39;1&#39;</td>
+<td>String</td>
+<td>(required) Unique Order ID</td>
+</tr>
+<tr>
+<td>orderRevenueTotal</td>
+<td>100000.001</td>
+<td>Integer/Float</td>
+<td>(required) Order Revenue grand total (includes tax, shipping, and subtracted discount), must be an integer or a float</td>
+</tr>
+<tr>
+<td>orderSub</td>
+<td>10</td>
+<td>Integer</td>
+<td>Order sub total (excludes shipping and excludes taxes), must be an integer. If can&#39;t be valid, put 0.</td>
+</tr>
+<tr>
+<td>orderTaxAmount</td>
+<td>1.0</td>
+<td>Integer/Float</td>
+<td>Tax. If doesn&#39;t apply, put 0.</td>
+</tr>
+<tr>
+<td>orderShippingAmount</td>
+<td>10.0</td>
+<td>Integer/Float</td>
+<td>Shipping costs. 0 if not there.</td>
+</tr>
+<tr>
+<td>orderDiscountOffered</td>
+<td>0</td>
+<td>Integer/Float</td>
+<td>boolean (set to false for unspecified parameter)</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+This code should only be included after loading hupilytics js library.
+</aside>
 <h1 id='errors'>Errors</h1>
 <aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
 
