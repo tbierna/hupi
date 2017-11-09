@@ -2,14 +2,16 @@
 title: Hupi Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
+  - javascript
   - shell: cURL
   - ruby
-  - javascript
+
 
 toc_footers:
   - <a href='https://github.com/hupi-analytics/hupilytics'>Hupilytics Source Repo</a>
 
 includes:
+  - recommendations
 
 search: true
 ---
