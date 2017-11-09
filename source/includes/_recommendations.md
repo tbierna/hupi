@@ -16,7 +16,7 @@ We will start with the asynchronous strategy as shown in the picture below.
 
 To explain in detail, when browser is loading your website page, you make an ajax call to a custom endpoint/route, this route will actually call hupi endpoint from server and hupi responds with recommendations in allowed formats and then the route action will parse this data and respond with either html or json based on your implementation to display the recommended products.
 
-<aside class="warning"> If you follow this strategy, you need to call hupilytics tracking function after fetching recommendations as you won't have recommendations available until you return from your custom endpoint.</aside>
+<aside class="warning"> If you follow this strategy, you need to call hupilytics tracking function after fetching recommendations as you won't have recommendations available until you return from your custom endpoint(hupi recommendations is one of the parameter tracking functions).</aside>
 
 So, to implement this strategy you need to add a custom route action which calls hupi data-retriever from your server.
 
@@ -28,7 +28,7 @@ We will start with synchronous strategy as shown in the picture below.
 
 This is the simplest strategy to implement. To elaborate, when your browser requests for a page, you call hupi endpoint to get recommendations and you generate your page along with these recommendations and respond with the html page containing recommendations.
 
-<aside class="notice">Hupi responds with recommendations within 100-200 ms.</aside>
+<aside class="notice">Hupi responds with recommendations within 50-200 ms.</aside>
 
 ## Dealing with Exceptions
 
