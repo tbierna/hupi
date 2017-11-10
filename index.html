@@ -648,16 +648,18 @@ This code should be included as onclick event call in html code of the product l
     <span class="nx">orderSub</span><span class="p">,</span>
     <span class="nx">orderTaxAmount</span><span class="p">,</span>
     <span class="nx">orderShippingAmount</span><span class="p">,</span>
-    <span class="nx">orderDiscountOffered</span>
+    <span class="nx">orderDiscountOffered</span><span class="p">,</span>
+    <span class="nx">productsInCart</span>
     <span class="p">);</span>
 </code></pre>
 <p>The detailed explaination of arguments and their types is listed in the table below.
 Here is an example js code with dummy values.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="c1">// Example code with dummy values</span>
-<span class="nx">hupiOrderTrack</span><span class="p">(</span><span class="s1">'testsite'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'EUR'</span><span class="p">,</span> <span class="s1">'10000-id'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'4'</span><span class="p">,</span> <span class="s1">'5'</span><span class="p">,</span> <span class="s1">'6'</span><span class="p">],</span> <span class="s1">'FR'</span><span class="p">,</span> <span class="s1">'100orderid'</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Example code with dummy values. </span>
+<span class="nx">hupiOrderTrack</span><span class="p">(</span><span class="s1">'testsite'</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'EUR'</span><span class="p">,</span> <span class="s1">'10000-id'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'2'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'4'</span><span class="p">,</span> <span class="s1">'5'</span><span class="p">,</span> <span class="s1">'6'</span><span class="p">],</span> <span class="s1">'FR'</span><span class="p">,</span> <span class="s1">'100orderid'</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="p">[[</span><span class="s1">'pid'</span><span class="p">,</span> <span class="s1">'name'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'cat1'</span><span class="p">,</span> <span class="s1">'cat2'</span><span class="p">],</span> <span class="s1">'10.2'</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]);</span>
 
 </code></pre>
-<p>This pushes the track page event to catchbox.</p>
+<p>This pushes the track page event to catchbox.
+<aside>productsInCart is an array of products(2d array), and each product is an array with (product id, name, category list, price, quantity)</aside></p>
 <h3 id='params-arguments-needed-for-hupiordertrack-function'>Params/Arguments Needed for hupiOrderTrack function</h3>
 <table><thead>
 <tr>
@@ -744,6 +746,12 @@ Here is an example js code with dummy values.</p>
 <td>0</td>
 <td>Integer/Float</td>
 <td>boolean (set to false for unspecified parameter)</td>
+</tr>
+<tr>
+<td>productsInCart</td>
+<td>[[&#39;pid1&#39;, &#39;name1&#39;, [&#39;cat1&#39;, &#39;cat2&#39;], 10.2, 1],[&#39;pid2&#39;, &#39;name2&#39;, [&#39;cat1&#39;, &#39;cat2&#39;], 10.2, 1]]</td>
+<td>Array of String Arrays</td>
+<td>All products in cart, it should be a 2d array, each inside array represents a product. Inside array has the following values(productId - String, productName - String, productCategory - Array of Strings, productPrice - String, product Quantity - Integer)</td>
 </tr>
 </tbody></table>
 
