@@ -239,7 +239,8 @@ hupiOrderTrack(
     orderSub,
     orderTaxAmount,
     orderShippingAmount,
-    orderDiscountOffered
+    orderDiscountOffered,
+    productsInCart
     );
 ```
 
@@ -247,12 +248,12 @@ The detailed explaination of arguments and their types is listed in the table be
 Here is an example js code with dummy values.
 
 ```javascript
-// Example code with dummy values
-hupiOrderTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'FR', '100orderid', 100.0, 0, 20.0, 10.0, true);
+// Example code with dummy values. 
+hupiOrderTrack('testsite', 1, 'EUR', '10000-id', ['1', '2'], ['4', '5', '6'], 'FR', '100orderid', 100.0, 0, 20.0, 10.0, true, [['pid', 'name', ['cat1', 'cat2'], '10.2', 1]]);
 
 ```
 This pushes the track page event to catchbox.
-
+<aside>productsInCart is an array of products(2d array), and each product is an array with (product id, name, category list, price, quantity)</aside>
 
 ### Params/Arguments Needed for hupiOrderTrack function
 
@@ -271,6 +272,7 @@ orderSub | 10 | Integer  | Order sub total (excludes shipping and excludes taxes
 orderTaxAmount | 1.0 | Integer/Float | Tax. If doesn't apply, put 0.
 orderShippingAmount | 10.0 | Integer/Float | Shipping costs. 0 if not there.
 orderDiscountOffered | 0 | Integer/Float | boolean (set to false for unspecified parameter)
+productsInCart | [['pid1', 'name1', ['cat1', 'cat2'], 10.2, 1],['pid2', 'name2', ['cat1', 'cat2'], 10.2, 1]] | Array of String Arrays | All products in cart, it should be a 2d array, each inside array represents a product. Inside array has the following values(productId - String, productName - String, productCategory - Array of Strings, productPrice - String, product Quantity - Integer)
 
 <aside class="notice">
 This code should only be included after loading hupilytics js library.
