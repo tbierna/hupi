@@ -258,6 +258,9 @@
                   <li>
                     <a href="#endpoints" class="toc-h2 toc-link" data-title="Hupi Recommendations">Endpoints</a>
                   </li>
+                  <li>
+                    <a href="#request-response-format" class="toc-h2 toc-link" data-title="Hupi Recommendations">Request Response Format</a>
+                  </li>
               </ul>
           </li>
       </div>
@@ -760,7 +763,7 @@ This code should only be included after loading hupilytics js library.
 
 <p>To explain in detail, when browser is loading your website page, you make an ajax call to a custom endpoint/route, this route will actually call hupi endpoint from server and hupi responds with recommendations in allowed formats and then the route action will parse this data and respond with either html or json based on your implementation to display the recommended products.</p>
 
-<aside class="warning"> If you follow this strategy, you need to call hupilytics tracking function after fetching recommendations as you won't have recommendations available until you return from your custom endpoint.</aside>
+<aside class="warning"> If you follow this strategy, you need to call hupilytics tracking function after fetching recommendations as you won't have recommendations available until you return from your custom endpoint(hupi recommendations is one of the parameter tracking functions).</aside>
 
 <p>So, to implement this strategy you need to add a custom route action which calls hupi data-retriever from your server.</p>
 <h3 id='synchronous-loading'>Synchronous Loading</h3>
@@ -770,7 +773,7 @@ This code should only be included after loading hupilytics js library.
 
 <p>This is the simplest strategy to implement. To elaborate, when your browser requests for a page, you call hupi endpoint to get recommendations and you generate your page along with these recommendations and respond with the html page containing recommendations.</p>
 
-<aside class="notice">Hupi responds with recommendations within 100-200 ms.</aside>
+<aside class="notice">Hupi responds with recommendations within 50-200 ms.</aside>
 <h2 id='dealing-with-exceptions'>Dealing with Exceptions</h2>
 <p>When you make http request from your server to hupi, hupi responds with recommendations in a very short.  It is recommended to handle these exceptions in your code for fluid experience to your users.</p>
 
@@ -822,7 +825,148 @@ This code should only be included after loading hupilytics js library.
 
 <p>But in order to protect your server from exception circumstances where hupi is taking longer than expected to respond with recommendations, you also are recommended to include a timeout when making a call to hupi server. The max timeout for response we recommend is 500ms.</p>
 <h2 id='endpoints'>Endpoints</h2>
-<p>Hupi has various recommendation endpoints for different pages types.</p>
+<p>Hupi supports many recommendation services, hence for each service, we have an endpoint where the client can request for recommendations based on certain filters.</p>
+
+<p>Those filters can be <code>visitor_id</code>(unique id assigned by hupilytics library), <code>product_id</code>(called <code>id_demande</code> in our filters), <code>basket</code>(all product ids in a cart/panier) or <code>category_id</code>.</p>
+
+<aside> Each endpoint is linked to a certain page types. Like category endpoint should always be linked to category page. This is done because each endpoints needs a specific set of filters.</aside>
+<h3 id='how-to-make-a-request'>How to make a request</h3>
+<p>You have to make a http post request to our data retriever server with proper headers and body, and our responds with the results in <code>json</code> format.</p>
+
+<p>An example curl request is shown on the right side(click on &#39;Curl/shell&#39; table to see the example). All the required variables are wrapped around <code>&lt;&gt;</code></p>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/&lt;ENDPOINT&gt; <span class="se">\</span>
+  -H <span class="s1">'accept-version: v1'</span> <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-token: &lt;apitoken&gt;'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+  "client":"&lt;CLIENT&gt;",
+  "render_type":"cursor",
+  "filters":"{\"id_demande\":\"&lt;product-id&gt;\", \"visitor_id\":\"&lt;visitor_id_from_pk_id&gt;\"}"
+}'</span>
+</code></pre>
+<p>As you can see from the curl request shown, there are certain variables you need to make request to our api. Here we explain the request and variables in more detail.</p>
+<h4 id='request-uri'>Request URI</h4>
+<p>The request uri is of the following format <code>http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/&lt;ENDPOINT&gt;</code></p>
+
+<p>You need to know the <code>CLIENT</code> name which is provided by hupi, it is usually the same as the one used in hupilytics tracking.</p>
+
+<p><code>ENDPOINT</code> is the name of the endpoint, the endpoint you are requesting recommendations from.</p>
+<h4 id='request-headers'>Request Headers</h4>
+<p>The headers needed are list below</p>
+
+<ol>
+<li>Accept-version which is of the form &#39;accept-version: v1&#39;</li>
+<li>Content Type - the type of content you are requesting. We support only json for now. So it will be of form &#39;content-type: application/json&#39;</li>
+<li>Cache control - We don&#39;t want to use the same reco as before. So cache is disabled. It is of form &#39;cache-control: no-cache&#39;</li>
+<li>X-API-TOKEN - It is for authenticating and it&#39;s value is provided by hupi to you. It is unique per client. An example token is &#39;x-api-token: abcdefghijklmnopqrstuvwxyz&#39;</li>
+</ol>
+
+<p>So the variable needed in header is &#39;x-api-token&#39;, it is provided by hupi to you.</p>
+<h4 id='request-body'>Request Body</h4>
+<p>The request body is of JSON type. And example is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"client"</span><span class="p">:</span><span class="s2">"&lt;CLIENT&gt;"</span><span class="p">,</span>
+  <span class="s2">"render_type"</span><span class="p">:</span><span class="s2">"cursor"</span><span class="p">,</span>
+  <span class="s2">"filters"</span><span class="p">:</span><span class="s2">"{\"id_demande\":\"&lt;product-id&gt;\", \"visitor_id\":\"&lt;visitor_id_from_pk_id&gt;\"}"</span>
+<span class="p">}</span>
+</code></pre>
+<p>As you can see the variables needed for body are CLIENT, which is the same as in the uri, and the variables in filters which vary based on endpoint. But as for the example above, they are &#39;product_id&#39; and &#39;visitor_id&#39;.</p>
+<h4 id='request-type'>Request Type</h4>
+<p>POST</p>
+
+<aside> All Endpoints have the same header, but uri changes based on endpoint name and body filter also changes based on endpoint</aside>
+<h3 id='endpoint-types'>Endpoint Types</h3>
+<p>All endpoints have one common filter called <code>visitor_id</code>. It is set by the hupilytics js library when it is loaded and is unique for each user browser. It is set when user visits your site for the first and is the same whatever page he visits afterwards. It is available from browser by calling this function <code>hupiVisitorId()</code>. This function is part of hupilytics js library.</p>
+
+<aside> In first time visit of the website for a user, if you are following `synchronous` strategy, you won't have visitor_id set for the site, as it was never loaded on browser. In this case, just pass in a dummy value for visitor_id filter like `dummy`</aside>
+<h4 id='hupi_reco_sim'>hupi_reco_sim</h4>
+<p>The endpoint name is <code>hupi_reco_sim</code>. So the url will be <code>http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/hupi_reco_sim</code>
+And endpoint for recommending similar products. If a user visits a product page, you can use this endpoint to display similar products.</p>
+
+<p>The endpoint needs two filters, <code>visitor_id</code> and <code>id_demande</code>(product_id). Both are of type &#39;String&#39;</p>
+
+<p>And example filter is shown on the right side(click on javascript tab)</p>
+<pre class="highlight javascript tab-javascript"><code><span class="s2">"filters"</span><span class="p">:</span><span class="s2">"{\"id_demande\":\"1000\", \"visitor_id\":\"b5d47b2a84e24c\"}"</span>
+</code></pre><h4 id='hupi_reco_cart'>hupi_reco_cart</h4>
+<p>The endpoint name is <code>hupi_reco_cart</code>. So the url will be <code>http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/hupi_reco_cart</code>
+An endpoint for recommending products on a cart/panier page. If a user navigates to checkout page, you can use this endpoint to display products which also could be added to cart along with existing in cart.</p>
+
+<p>The endpoint needs two filters, <code>visitor_id</code> and <code>basket</code>. <code>basket</code> is array of product ids which are in cart.</p>
+
+<p>And example filter is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="s2">"filters"</span><span class="p">:</span><span class="s2">"{\"visitor_id\": \"b5b288d6cdddca25\",\"basket\":\"[2402,640]\"}"</span>
+</code></pre><h4 id='hupi_reco_home'>hupi_reco_home</h4>
+<p>The endpoint name is <code>hupi_reco_home</code>. So the url will be <code>http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/hupi_reco_home</code></p>
+
+<p>An endpoint for recommending products on a home page. Based on user click history, we recommend what products he could click, so you use this endpoint to display products.</p>
+
+<p>The endpoint needs only one filter <code>visitor_id</code>.</p>
+
+<p>And example filter is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="s2">"filters"</span><span class="p">:</span><span class="s2">"{\"visitor_id\": \"b5b288d6cdddca25\"}"</span>
+</code></pre><h4 id='hupi_reco_category'>hupi_reco_category</h4>
+<p>The endpoint name is <code>hupi_reco_category</code>. So the url will be <code>http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/hupi_reco_category</code></p>
+
+<p>An endpoint for recommending products on a category page. Based on user click history in that category, we recommend what products he could click, so you use this endpoint to display products.</p>
+
+<p>The endpoint needs two filters <code>visitor_id</code> and <code>category_id</code>(Category id is optional and should be a string).</p>
+
+<p>And example filter is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="s2">"filters"</span><span class="p">:</span><span class="s2">"{\"visitor_id\": \"b5b288d6cdddca25\", \"category_id\": \"2\"}"</span>
+</code></pre><h4 id='hupi_reco_sub_category'>hupi_reco_sub_category</h4>
+<p>The endpoint name is <code>hupi_reco_sub_category</code>. So the url will be <code>http://api.dataretriever.hupi.io/private/&lt;CLIENT&gt;/hupi_reco_sub_category</code></p>
+
+<p>An endpoint for recommending products on a sub-category page. Based on user click history in that sub-category, we recommend what products he could click, so you use this endpoint to display products.</p>
+
+<p>This endpoint is similar to category endpoint.</p>
+
+<p>The endpoint needs two filters <code>visitor_id</code> and <code>sub_category_id</code>(Category id is optional and should be a string).</p>
+
+<p>And example filter is shown on the right</p>
+<pre class="highlight javascript tab-javascript"><code><span class="s2">"filters"</span><span class="p">:</span><span class="s2">"{\"visitor_id\": \"b5b288d6cdddca25\", \"sub_category_id\": \"2\"}"</span>
+</code></pre><h2 id='request-response-format'>Request Response Format</h2>
+<p>The response will be in ‘json’ format. We support two formats and both these format&#39;s should be supported by your implementation.</p>
+
+<p>As shown on the right. Each key of ‘idR’ inside the ‘data’ array of response contains the recommended product i.e., PRODUCT-ID or array of product ids inside value of &#39;idRs&#39; key.</p>
+
+<p>You should parse this json and get product ids and then fetch the products of those ids and generate html code to display these product recommendations.</p>
+
+<aside> Product id can be either an integer or a string(Usually it is a string), so both these cases should handled as well as the cases where the ‘data’ array responds with an empty array.</aside>
+
+<p>You need to support for all endpoints the two formats.</p>
+<h3 id='format-1'>Format 1</h3>
+<p>product id in <code>idR</code> key</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Format 1</span>
+<span class="p">{</span>
+  <span class="s2">"data"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">"idR"</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">PROD_RECO</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">"idR"</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">PROD_RECO</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">"idR"</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">PROD_RECO</span><span class="o">&gt;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">"idR"</span><span class="p">:</span> <span class="o">&lt;</span><span class="nx">PROD_RECO</span><span class="o">&gt;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre><h3 id='format-2'>Format 2</h3>
+<p>Product ids in value array of  <code>idRs</code> key</p>
+<pre class="highlight javascript tab-javascript"><code><span class="c1">// Format 2</span>
+<span class="p">{</span>
+ <span class="s2">"data"</span><span class="p">:</span> <span class="p">[</span>
+   <span class="p">{</span>
+     <span class="s2">"idRs"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="nx">PROD_RECO</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">PROD_RECO</span><span class="o">&gt;</span><span class="p">]</span>
+   <span class="p">}</span>
+ <span class="p">]</span>
+<span class="p">}</span>
+</code></pre>
+<p>We usually return 8 product ids by default.</p>
 
       </div>
       <div class="dark-box">
